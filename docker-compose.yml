@@ -1,0 +1,37 @@
+services:
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: eWallet
+      POSTGRES_USER: eWalletUser
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    healthcheck: # Ensures that the MySQL service is fully ready before the web service starts
+      test: ["CMD-SHELL", "pg_isready -U eWalletUser -d eWallet"]
+      interval: 10s # Check health every 10 seconds
+      timeout: 5s # Timeout for each healthcheck (Each health check must complete with 5 seconds
+      retries: 5 # Retry up to 5 times before marking as unhealthy
+      start_period: 10s # This is a delay (10 seconds) after container startup before Docker begins checking the service health, giving PostgreSQL some time to initialize
+    networks:
+      - eWallet_network
+
+  app:
+    image: ewallet:latest
+    container_name: app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/eWallet
+      - SPRING_DATASOURCE_USERNAME=eWalletUser
+      - SPRING_DATASOURCE_PASSWORD=password
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - eWallet_network
+
+networks:
+  eWallet_network:
