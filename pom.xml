@@ -28,6 +28,8 @@
 	</scm>
 	<properties>
 		<java.version>23</java.version>
+		<!-- Enables annotation processing in full mode, allowing all annotations to be processed during compilation. -->
+		<maven.compiler.proc>full</maven.compiler.proc>
 	</properties>
 	<dependencies>
 		<dependency>
