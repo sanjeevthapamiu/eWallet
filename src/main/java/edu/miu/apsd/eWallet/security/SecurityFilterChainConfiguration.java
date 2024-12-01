@@ -27,7 +27,8 @@ public class SecurityFilterChainConfiguration {
                 .csrf(CsrfConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
-                        request -> request.requestMatchers("/api/v1/auth/**").permitAll()
+                        request -> request.requestMatchers("/api/v1/auth/**", "/")
+                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
