@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,23 +17,29 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String name;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
+
     private Long phone;
+
+    @Enumerated(EnumType.STRING)
+    private UserGender gender;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(name = "is_enabled")
     private boolean isEnabled;
-
-    private String authorities;
-
-//    private UserGender gender;
 
     @OneToOne
     @JoinColumn(name = "address_id")
@@ -45,6 +54,15 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private final List<Transaction> receiveTransactions = new ArrayList<>();
 
+    public User(String name, String email, String password, Long phone, UserGender gender, Role role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.gender = gender;
+        this.role = role;
+        this.isEnabled = true;
+    }
 
     public void addProduct(Product product) {
         product.setUser(this);
@@ -59,5 +77,30 @@ public class User {
     public void addReceiveTransaction(Transaction transaction) {
         transaction.setSender(this);
         receiveTransactions.add(transaction);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return role.getAuthorities();
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 }
