@@ -1,5 +1,6 @@
 package edu.miu.apsd.eWallet.security;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -29,6 +30,14 @@ public class JwtService {
                 .claim("authorities", populateAuthorities(userDetails))
                 .signWith(signInKey())
                 .compact();
+    }
+
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(signInKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 
     private String populateAuthorities(UserDetails userDetails) {
