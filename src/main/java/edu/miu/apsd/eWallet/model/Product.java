@@ -22,8 +22,8 @@ public class Product {
 
     private String name;
     private String description;
-    private double price;
-    private int stock;
+    private Double price;
+    private Integer stock;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -31,7 +31,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User merchant;
 
     @OneToMany(mappedBy = "product")
     private final List<Transaction> transactions = new ArrayList<>();

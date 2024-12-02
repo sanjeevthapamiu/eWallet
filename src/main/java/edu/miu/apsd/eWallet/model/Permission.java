@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum Permission {
 
-    TEST("test:test");
+    LIST_PRODUCT("product:list"),
+    CREATE_PRODUCT("product:create"),
+    READ_PRODUCT("product:read");
 
     private final String permission;
 

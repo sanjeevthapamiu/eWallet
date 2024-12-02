@@ -8,13 +8,13 @@ spring:
     password: password
 
   jpa:
-    show-sql: true
+#    show-sql: true
     hibernate:
       ddl-auto: create-drop
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-      hibernate.format_sql: true
+#      hibernate.format_sql: true
 
 jwt:
-  # made using: https://jwtsecret.com/generate
+  # generated using: https://jwtsecret.com/generate
   key: e660064fc331dbb874b127a70717d494bcf23d243b5d9276c1607b322a500e69cef6e806b8e332293dcabcb3a9cb5ec8d4886a7515e3610f95a0298e5be27cbf2d3a2af3eeabe9e838e27acdfd998bb006a7239e81b99133c08711e5c82c6df3be897c4793baa90796542e02fe9fe03d8a4d4b250772a3e85687a5432690fe1d

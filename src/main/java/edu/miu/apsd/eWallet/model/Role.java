@@ -13,8 +13,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public enum Role {
 
-    CUSTOMER(Set.of()),
-    MERCHANT(Set.of());
+    CUSTOMER(Set.of(Permission.LIST_PRODUCT, Permission.READ_PRODUCT)),
+
+    MERCHANT(Set.of(Permission.LIST_PRODUCT, Permission.CREATE_PRODUCT, Permission.READ_PRODUCT));
 
     private final Set<Permission> permissions;
 

@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "merchant")
     private final List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
@@ -65,7 +65,7 @@ public class User implements UserDetails {
     }
 
     public void addProduct(Product product) {
-        product.setUser(this);
+        product.setMerchant(this);
         products.add(product);
     }
 

@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -36,11 +37,19 @@ public class JwtFilter extends OncePerRequestFilter {
                 // Extract the email from claim
                 String email = claims.getSubject();
 
+                // Load User Details from email
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//                    SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
+//                            email,
+//                            null,
+//                            userDetailsService.loadUserByUsername(email).getAuthorities()
+//                    ));
                     SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(
-                            email,
+                            userDetails,
                             null,
-                            userDetailsService.loadUserByUsername(email).getAuthorities()
+                            userDetails.getAuthorities()
                     ));
                 }
             }
