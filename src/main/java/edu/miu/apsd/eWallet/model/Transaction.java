@@ -19,8 +19,11 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(scale = 2)
     private double amount;
-    private String type;
+
+    private TransactionType type;
+
     private LocalDateTime date;
 
     @Column(name = "product_quantity")
@@ -43,5 +46,11 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "receiver_user_id")
     private User receiver;
+
+
+    @PrePersist
+    public void onCreate() {
+        date = LocalDateTime.now();
+    }
 
 }

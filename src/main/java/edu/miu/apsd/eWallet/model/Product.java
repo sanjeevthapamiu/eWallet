@@ -1,5 +1,6 @@
 package edu.miu.apsd.eWallet.model;
 
+import edu.miu.apsd.eWallet.exception.InsufficientStockException;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,9 @@ public class Product {
     private Double price;
     private Integer stock;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Sale sale;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
@@ -40,6 +44,18 @@ public class Product {
     public void addTransaction(Transaction transaction) {
         transaction.setProduct(this);
         transactions.add(transaction);
+    }
+
+    public void decrementStock(int stock) {
+        if (this.stock < stock)
+            throw new InsufficientStockException(String.format("Insufficient stock. Expected %d, but only %d available.", stock, this.stock));
+
+        this.stock -= stock;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.setSale(new Sale(SaleType.PRODUCT_SALES, this));
     }
 
 }

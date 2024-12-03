@@ -3,6 +3,7 @@ package edu.miu.apsd.eWallet.service;
 import edu.miu.apsd.eWallet.dto.request.AuthenticationRequestDTO;
 import edu.miu.apsd.eWallet.dto.request.RegisterRequestDTO;
 import edu.miu.apsd.eWallet.dto.response.AuthenticationResponseDTO;
+import edu.miu.apsd.eWallet.model.Balance;
 import edu.miu.apsd.eWallet.model.User;
 import edu.miu.apsd.eWallet.repository.UserRepository;
 import edu.miu.apsd.eWallet.security.JwtService;
@@ -31,6 +32,8 @@ public class AuthenticationService {
                 registerRequestDTO.gender(),
                 registerRequestDTO.role()
         );
+
+        user.setBalance(new Balance());
 
         User savedUser = userRepository.save(user);
         String token = jwtService.generateToken(savedUser);

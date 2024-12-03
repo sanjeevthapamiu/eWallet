@@ -1,5 +1,6 @@
 package edu.miu.apsd.eWallet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,6 +46,13 @@ public class User implements UserDetails {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Sale sale;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "balance_id")
+    private Balance balance;
+
     @OneToMany(mappedBy = "merchant")
     private final List<Product> products = new ArrayList<>();
 
@@ -62,6 +70,11 @@ public class User implements UserDetails {
         this.gender = gender;
         this.role = role;
         this.isEnabled = true;
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.sale = new Sale(SaleType.USER_SALES, this);
     }
 
     public void addProduct(Product product) {
