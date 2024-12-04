@@ -46,7 +46,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Sale sale;
 
     @OneToOne(cascade = CascadeType.ALL)

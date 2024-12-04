@@ -4,6 +4,7 @@ import edu.miu.apsd.eWallet.dto.request.AuthenticationRequestDTO;
 import edu.miu.apsd.eWallet.dto.request.RegisterRequestDTO;
 import edu.miu.apsd.eWallet.dto.response.AuthenticationResponseDTO;
 import edu.miu.apsd.eWallet.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,14 @@ public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponseDTO> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<AuthenticationResponseDTO> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(authenticationService.register(registerRequestDTO));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponseDTO> login(@RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
+    public ResponseEntity<AuthenticationResponseDTO> login(@Valid @RequestBody AuthenticationRequestDTO authenticationRequestDTO) {
         return ResponseEntity.ok(authenticationService.login(authenticationRequestDTO));
     }
 

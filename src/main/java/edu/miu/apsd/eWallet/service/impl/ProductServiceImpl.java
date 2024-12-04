@@ -8,6 +8,7 @@ import edu.miu.apsd.eWallet.model.Product;
 import edu.miu.apsd.eWallet.model.User;
 import edu.miu.apsd.eWallet.repository.ProductRepository;
 import edu.miu.apsd.eWallet.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -90,6 +91,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @PreAuthorize("@productServiceImpl.isProductOwner(#id, authentication.name)")
+    @Transactional
     public void deleteProduct(UUID id) {
         getProductById(id);
         repository.deleteById(id);

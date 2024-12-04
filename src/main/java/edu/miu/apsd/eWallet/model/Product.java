@@ -26,7 +26,7 @@ public class Product {
     private Double price;
     private Integer stock;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
     private Sale sale;
 
     @ManyToOne

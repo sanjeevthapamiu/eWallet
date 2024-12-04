@@ -2,8 +2,8 @@ package edu.miu.apsd.eWallet.controller;
 
 import edu.miu.apsd.eWallet.dto.request.ProductRequestDTO;
 import edu.miu.apsd.eWallet.dto.response.ProductResponseDTO;
-import edu.miu.apsd.eWallet.model.Product;
 import edu.miu.apsd.eWallet.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDTO> saveProduct(@RequestBody ProductRequestDTO productRequestDTO) {
+    public ResponseEntity<ProductResponseDTO> saveProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO) {
         ProductResponseDTO productResponseDTO = productService.saveProduct(productRequestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(productResponseDTO);
     }
@@ -41,7 +41,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("id") UUID id, @RequestBody ProductRequestDTO productRequestDTO) {
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable("id") UUID id, @Valid @RequestBody ProductRequestDTO productRequestDTO) {
         ProductResponseDTO productResponseDTO = productService.updateProduct(id, productRequestDTO);
         return ResponseEntity.ok(productResponseDTO);
     }

@@ -8,6 +8,7 @@ import edu.miu.apsd.eWallet.dto.response.BalanceResponseDTO;
 import edu.miu.apsd.eWallet.dto.response.TransactionResponseDTO;
 import edu.miu.apsd.eWallet.service.TransactionService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class TransactionController {
 
     @GetMapping
     public ResponseEntity<Page<TransactionResponseDTO>> getAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
     ) {
         return ResponseEntity.ok(service.getAll(page, size));
     }
@@ -35,25 +36,25 @@ public class TransactionController {
 
     @PostMapping("/deposit")
     @Transactional
-    public ResponseEntity<TransactionResponseDTO> depositMoney(@RequestBody DepositRequestDTO depositRequestDTO) {
+    public ResponseEntity<TransactionResponseDTO> depositMoney(@Valid @RequestBody DepositRequestDTO depositRequestDTO) {
         return ResponseEntity.ok(service.depositMoney(depositRequestDTO));
     }
 
     @PostMapping("/withdraw")
     @Transactional
-    public ResponseEntity<TransactionResponseDTO> withdrawMoney(@RequestBody WithdrawRequestDTO withdrawRequestDTO) {
+    public ResponseEntity<TransactionResponseDTO> withdrawMoney(@Valid @RequestBody WithdrawRequestDTO withdrawRequestDTO) {
         return ResponseEntity.ok(service.withdrawMoney(withdrawRequestDTO));
     }
 
     @PostMapping("/send")
     @Transactional
-    public ResponseEntity<TransactionResponseDTO> sendMoney(@RequestBody SendRequestDTO sendRequestDTO) {
+    public ResponseEntity<TransactionResponseDTO> sendMoney(@Valid @RequestBody SendRequestDTO sendRequestDTO) {
         return ResponseEntity.ok(service.sendMoney(sendRequestDTO));
     }
 
     @PostMapping("/purchase")
     @Transactional
-    public ResponseEntity<TransactionResponseDTO> purchaseProduct(@RequestBody PurchaseRequestDTO purchaseRequestDTO) {
+    public ResponseEntity<TransactionResponseDTO> purchaseProduct(@Valid @RequestBody PurchaseRequestDTO purchaseRequestDTO) {
         return ResponseEntity.ok(service.purchaseProduct(purchaseRequestDTO));
     }
 
