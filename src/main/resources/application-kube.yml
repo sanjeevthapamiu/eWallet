@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: eWallet
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_ENDPOINT}:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+#      hibernate.format_sql: true
+
+jwt:
+  key: ${JWT_KEY}

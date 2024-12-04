@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ewallet-app
+  labels:
+    app: ewallet-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ewallet-app
+  template:
+    metadata:
+      labels:
+        app: ewallet-app
+    spec:
+      containers:
+        - name: ewallet-app
+          image: sanjeevthapamiu/ewallet:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: kube
+
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwtKey
+
+            - name: POSTGRES_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: endpoint
+
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: database
+
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
+
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0 # Specifies how many pods can be unavailable during update
+      maxSurge: 1 # how many extra pods can be created temporarily during the update
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ewallet-service
+spec:
+  selector:
+    app: ewallet-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
