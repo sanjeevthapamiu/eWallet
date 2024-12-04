@@ -5,10 +5,10 @@ import edu.miu.apsd.eWallet.dto.request.PurchaseRequestDTO;
 import edu.miu.apsd.eWallet.dto.request.SendRequestDTO;
 import edu.miu.apsd.eWallet.dto.request.WithdrawRequestDTO;
 import edu.miu.apsd.eWallet.dto.response.BalanceResponseDTO;
+import edu.miu.apsd.eWallet.dto.response.TransactionProductResponseDTO;
 import edu.miu.apsd.eWallet.dto.response.TransactionResponseDTO;
 import edu.miu.apsd.eWallet.exception.ResourceNotFoundException;
 import edu.miu.apsd.eWallet.mapper.BalanceMapper;
-import edu.miu.apsd.eWallet.mapper.ProductMapper;
 import edu.miu.apsd.eWallet.model.*;
 import edu.miu.apsd.eWallet.repository.*;
 import edu.miu.apsd.eWallet.service.TransactionService;
@@ -33,7 +33,6 @@ public class TransactionServiceImpl implements TransactionService {
     private final ProductRepository productRepository;
     private final SaleRepository saleRepository;
     private final BalanceMapper balanceMapper;
-    private final ProductMapper productMapper;
 
     public Page<TransactionResponseDTO> getAll(int page, int size) {
         UUID authenticatedUserId = getAuthenticatedUser().getId();
@@ -168,6 +167,10 @@ public class TransactionServiceImpl implements TransactionService {
             to = transaction.getReceiver().getName();
         }
 
+        Product product = transaction.getProduct();
+        TransactionProductResponseDTO productResponseDTO = (product == null) ? null
+                : new TransactionProductResponseDTO(product.getId(), product.getName(), transaction.getProductQuantity(), transaction.getAmount());
+
         return new TransactionResponseDTO(
                 transaction.getId(),
                 transaction.getAmount(),
@@ -175,7 +178,7 @@ public class TransactionServiceImpl implements TransactionService {
                 transaction.getDate(),
                 from,
                 to,
-                productMapper.productToProductResponseDTO(transaction.getProduct())
+                productResponseDTO
         );
     }
 

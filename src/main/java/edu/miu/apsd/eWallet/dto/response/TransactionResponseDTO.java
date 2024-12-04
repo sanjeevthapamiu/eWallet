@@ -12,5 +12,5 @@ public record TransactionResponseDTO(
         LocalDateTime date,
         String from,
         String to,
-        ProductResponseDTO product
+        TransactionProductResponseDTO product
 ) {}
