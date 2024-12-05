@@ -54,6 +54,7 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleSecurityException(Exception ex) {
         if (ex instanceof ErrorResponse errorResponse) {
             log.debug("Client Error: {}", ex.getMessage());
+            System.out.println("=======>" + ex.getMessage());
             return ProblemDetail.forStatus(errorResponse.getStatusCode());
         }
 

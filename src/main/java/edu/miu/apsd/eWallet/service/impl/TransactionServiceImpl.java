@@ -146,6 +146,7 @@ public class TransactionServiceImpl implements TransactionService {
         Transaction transaction = new Transaction();
         transaction.setType(TransactionType.PURCHASE);
         transaction.setAmount(totalAmount);
+        transaction.setProductQuantity(purchaseRequestDTO.stock());
         transaction.setProduct(product);
         transaction.setSender(authenticatedUser);
         transaction.setReceiver(product.getMerchant());
