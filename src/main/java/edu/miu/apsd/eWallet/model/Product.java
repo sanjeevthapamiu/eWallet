@@ -30,10 +30,6 @@ public class Product {
     private Sale sale;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @ManyToOne
     @JoinColumn(name = "user_id")
     private User merchant;
 
