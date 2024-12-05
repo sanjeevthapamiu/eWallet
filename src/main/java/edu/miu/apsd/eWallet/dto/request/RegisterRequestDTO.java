@@ -26,5 +26,7 @@ public record RegisterRequestDTO(
         UserGender gender,
 
         @NotNull(message = "Role is required")
-        Role role
+        Role role,
+
+        AddressRequestDTO address
 ) {}
